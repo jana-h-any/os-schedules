@@ -63,7 +63,9 @@ P5 1 8 2
 
 ![Input File](ss/input_file.png)
 
-![home](ss/Home.png)
+![home](ss/Home.jpg)
+
+
 
 ---
 
@@ -105,8 +107,12 @@ flutter pub get
 flutter run
 
 
+
+
 🧑‍💻 Developed By
 Jana Hany Mostafa
+
+
 
 📬 Contact
 GitHub: @jana-h-any
@@ -114,6 +120,7 @@ GitHub: @jana-h-any
 LinkedIn: [linkedin.com/in/jana-hany]
 
 Email: [janahanymostafa016@gmail.com]
+
 
 📝 License
 This project is open source and available under the MIT License.
