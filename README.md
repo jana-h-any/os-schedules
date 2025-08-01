@@ -106,12 +106,16 @@ flutter run
 
 
 
-🧑‍💻 Developed By
-Jana Hany Mostafa
+### 👩‍💻 Developed By
+
+**Jana Hany Mostafa**
 
 
 
-📬 Contact
+
+## 📬 Contact
+
+
 GitHub: @jana-h-any
 
 LinkedIn: [linkedin.com/in/jana-hany]
@@ -119,5 +123,6 @@ LinkedIn: [linkedin.com/in/jana-hany]
 Email: [janahanymostafa016@gmail.com]
 
 
-📝 License
+## 📝 License
+
 This project is open source and available under the MIT License.
