@@ -34,10 +34,8 @@ Watch the Windows app in action here:
   Line 4: Lambda for Priority
 
 Example:
-5
-10 3
-8 2
-1.5
+
+![Input File](ss/input_file.png)
 
 - ⚙️ The app's generator module will then produce an **output file** with the actual process data in the following format:
 
@@ -46,12 +44,7 @@ Example:
   Line 3+: Each process on its own line
 
 Example:
-5
-P1 2 7 3
-P2 5 4 2
-P3 3 6 1
-P4 7 3 4
-P5 1 8 2
+![output File](ss/output_file.png)
 
 - 🔁 Generate random processes automatically from the input file
 - ✍️ Enter process data manually via the app interface
