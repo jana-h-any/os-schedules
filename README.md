@@ -26,6 +26,10 @@ Watch the Windows app in action here:
 
 ✅ **Multiple Input Options**
 
+- ✍️ Enter process data manually via the app interface
+
+- 🔁 Generate random processes automatically from the input file
+
 - 📂 Upload a configuration input file with the following format:
 
   Line 1: Number of Processes
@@ -44,10 +48,10 @@ Example:
   Line 3+: Each process on its own line
 
 Example:
+
 ![output File](ss/output_file.png)
 
-- 🔁 Generate random processes automatically from the input file
-- ✍️ Enter process data manually via the app interface
+
 
 ✅ **Comprehensive Results Output**
 - Gantt Chart showing execution order with start and end times
