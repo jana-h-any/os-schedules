@@ -4,6 +4,17 @@ A fully-featured Flutter application that simulates and visualizes CPU schedulin
 Designed for both manual and file-based input, this project aims to make operating system concepts more accessible and engaging.
 
 ---
+## 🎬 Live Demo
+
+Watch the Mobile app in action here:
+
+[![Watch the video](https://img.youtube.com/vi/PTjxTAkZYF4/0.jpg)](https://youtube.com/shorts/PTjxTAkZYF4?si=4deiob9624z8XuI8)
+
+Watch the Windows app in action here:
+
+[![Watch the video](https://img.youtube.com/vi/FCucXDteDDc/0.jpg)](https://youtu.be/FCucXDteDDc?si=6mnBblZTAm7JxzmQ)
+
+
 
 ## 🚀 Key Features
 
@@ -59,22 +70,11 @@ P5 1 8 2
 
 ---
 
-## 🖼 Screenshots
-
-![Input File](ss/input_file.png)
-
-![home](ss/Home.jpg)
-
-
-
----
 
 ## 📂 Project Structure
 
 - `lib/` — Main Flutter source files
-- `screenshots/` — App UI previews
 - `input.txt` — Example input file for random process generation
-- `output.txt` — Auto-generated process file used by the scheduler
 - `README.md` — This file 😉
 
 ---
