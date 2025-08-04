@@ -19,7 +19,12 @@ class Scheduler {
       double arrivalTime = double.parse(process['arrivalTime']);
       double burstTime = double.parse(process['burstTime']);
 
-      double waitingTime = max(0.0, currentTime - arrivalTime);
+      // Fix: Start from the arrival time if no process has arrived yet
+      if (currentTime < arrivalTime) {
+        currentTime = arrivalTime;
+      }
+
+      double waitingTime = currentTime - arrivalTime;
       process['waitingTime'] = waitingTime.toStringAsFixed(2);
 
       double turnaroundTime = burstTime + waitingTime;
@@ -32,7 +37,6 @@ class Scheduler {
       });
 
       currentTime += burstTime;
-
       totalWaitingTime += waitingTime;
       totalTurnaroundTime += turnaroundTime;
     }
@@ -68,6 +72,9 @@ class Scheduler {
           : process['burstTime'].toDouble();
     }
 
+    int? lastProcessId;
+    double? blockStartTime;
+
     while (remainingBurst.isNotEmpty) {
       int? selectedProcessId;
       double shortestRemaining = double.infinity;
@@ -100,16 +107,31 @@ class Scheduler {
         continue;
       }
 
-      executionOrder?.add({
-        'id': selectedProcessId,
-        'start': currentTime.toStringAsFixed(2),
-        'end': (currentTime + 1).toStringAsFixed(2),
-      });
+      // لو العملية اتغيرت، نسجل البلوك اللي فات
+      if (selectedProcessId != lastProcessId) {
+        if (lastProcessId != null && blockStartTime != null) {
+          executionOrder?.add({
+            'id': lastProcessId,
+            'start': blockStartTime.toStringAsFixed(2),
+            'end': currentTime.toStringAsFixed(2),
+          });
+        }
+        blockStartTime = currentTime;
+        lastProcessId = selectedProcessId;
+      }
 
+      // Execute current process for 1 time unit
       remainingBurst[selectedProcessId] =
           remainingBurst[selectedProcessId]! - 1;
 
       if (remainingBurst[selectedProcessId]! == 0) {
+        // لما البروسيس تخلص نضيف آخر بلوك
+        executionOrder?.add({
+          'id': selectedProcessId,
+          'start': blockStartTime!.toStringAsFixed(2),
+          'end': (currentTime + 1).toStringAsFixed(2),
+        });
+
         var process =
         copiedProcesses.firstWhere((p) => p['id'] == selectedProcessId);
         double arrivalTime = process['arrivalTime'] is String
@@ -129,6 +151,10 @@ class Scheduler {
         totalTurnaroundTime += turnaroundTime;
 
         remainingBurst.remove(selectedProcessId);
+
+        // Reset block tracking
+        lastProcessId = null;
+        blockStartTime = null;
       }
 
       currentTime++;
@@ -154,39 +180,87 @@ class Scheduler {
     double totalWaitingTime = 0.0;
     double totalTurnaroundTime = 0.0;
 
-    processes.sort(
-            (a, b) => int.parse(b['priority']).compareTo(int.parse(a['priority'])));
+    List<Map<String, dynamic>> processesCopy =
+    processes.map((p) => Map<String, dynamic>.from(p)).toList();
 
-    for (var process in processes) {
+    Set<int> completed = {};
+    int n = processes.length;
+
+    while (completed.length < n) {
+
+      List<Map<String, dynamic>> available = processesCopy.where((p) {
+        int id = p['id'];
+        double arrival = double.parse(p['arrivalTime']);
+        return arrival <= currentTime && !completed.contains(id);
+      }).toList();
+
+      if (available.isEmpty) {
+
+        var next = processesCopy
+            .where((p) => !completed.contains(p['id']))
+            .reduce((a, b) =>
+        double.parse(a['arrivalTime']) < double.parse(b['arrivalTime'])
+            ? a
+            : b);
+
+        double arrivalTime = double.parse(next['arrivalTime']);
+        double burstTime = double.parse(next['burstTime']);
+        int id = next['id'];
+
+        currentTime = arrivalTime;
+        double waitingTime = 0.0;
+        double turnaroundTime = burstTime;
+
+        next['waitingTime'] = waitingTime.toStringAsFixed(2);
+        next['turnaroundTime'] = turnaroundTime.toStringAsFixed(2);
+
+        executionOrder?.add({
+          'id': id,
+          'start': arrivalTime.toStringAsFixed(2),
+          'end': (arrivalTime + burstTime).toStringAsFixed(2),
+        });
+
+        currentTime += burstTime;
+        totalWaitingTime += waitingTime;
+        totalTurnaroundTime += turnaroundTime;
+        completed.add(id);
+        continue;
+      }
+
+      // لو فيه عمليات وصلت، نختار أعلى Priority
+      available.sort((a, b) =>
+          int.parse(b['priority']).compareTo(int.parse(a['priority'])));
+
+      var process = available.first;
+      int id = process['id'];
       double arrivalTime = double.parse(process['arrivalTime']);
       double burstTime = double.parse(process['burstTime']);
 
-      double waitingTime = max(0.0, currentTime - arrivalTime);
-      process['waitingTime'] = waitingTime.toStringAsFixed(2);
+      double waitingTime = currentTime - arrivalTime;
+      double turnaroundTime = waitingTime + burstTime;
 
-      double turnaroundTime = burstTime + waitingTime;
+      process['waitingTime'] = waitingTime.toStringAsFixed(2);
       process['turnaroundTime'] = turnaroundTime.toStringAsFixed(2);
 
       executionOrder?.add({
-        'id': process['id'],
+        'id': id,
         'start': currentTime.toStringAsFixed(2),
         'end': (currentTime + burstTime).toStringAsFixed(2),
       });
 
       currentTime += burstTime;
-
       totalWaitingTime += waitingTime;
       totalTurnaroundTime += turnaroundTime;
+      completed.add(id);
     }
 
-    processes.add({
+    processesCopy.add({
       'id': 'Average',
-      'waitingTime': (totalWaitingTime / processes.length).toStringAsFixed(2),
-      'turnaroundTime':
-      (totalTurnaroundTime / processes.length).toStringAsFixed(2),
+      'waitingTime': (totalWaitingTime / n).toStringAsFixed(2),
+      'turnaroundTime': (totalTurnaroundTime / n).toStringAsFixed(2),
     });
 
-    return processes;
+    return processesCopy;
   }
 
   // Round Robin
@@ -313,6 +387,9 @@ class Scheduler {
       remainingBurst[id] = process['burstTime'];
     }
 
+    int? lastProcessId;
+    double? startTime;
+
     while (remainingBurst.isNotEmpty) {
       int? selectedProcessId;
       double shortestRemaining = double.infinity;
@@ -339,18 +416,33 @@ class Scheduler {
         continue;
       }
 
-      executionOrder?.add({
-        'id': selectedProcessId,
-        'start': currentTime.toStringAsFixed(2),
-        'end': (currentTime + 1).toStringAsFixed(2),
-      });
+      // Switch context if process changed
+      if (selectedProcessId != lastProcessId) {
+        if (lastProcessId != null && startTime != null) {
+          executionOrder?.add({
+            'id': lastProcessId,
+            'start': startTime.toStringAsFixed(2),
+            'end': currentTime.toStringAsFixed(2),
+          });
+        }
+        startTime = currentTime;
+        lastProcessId = selectedProcessId;
+      }
 
+      // Execute 1 time unit
       remainingBurst[selectedProcessId] =
           remainingBurst[selectedProcessId]! - 1;
 
       if (remainingBurst[selectedProcessId]! <= 0) {
-        var process =
-        copiedProcesses.firstWhere((p) => p['id'] == selectedProcessId);
+        // End current block
+        executionOrder?.add({
+          'id': selectedProcessId,
+          'start': startTime!.toStringAsFixed(2),
+          'end': (currentTime + 1).toStringAsFixed(2),
+        });
+
+        var process = copiedProcesses
+            .firstWhere((p) => p['id'] == selectedProcessId);
         double arrivalTime = process['arrivalTime'];
         double burstTime = process['burstTime'];
 
@@ -364,6 +456,8 @@ class Scheduler {
         totalTurnaroundTime += turnaroundTime;
 
         remainingBurst.remove(selectedProcessId);
+        lastProcessId = null;
+        startTime = null;
       }
 
       currentTime += 1;

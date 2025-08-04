@@ -1,7 +1,9 @@
 # 🧠 OS Scheduling Visualizer
 
-A fully-featured Flutter application that simulates and visualizes CPU scheduling algorithms in an interactive and intuitive way.
-Designed for both manual and file-based input, this project aims to make operating system concepts more accessible and engaging.
+A fully-featured Flutter application that simulates and visualizes CPU scheduling algorithms in an interactive and intuitive way.  
+Designed for both manual and file-based input, this project also includes a **Process Generator Module** that creates randomized process data based on configurable statistical distributions (e.g., mean, standard deviation, and lambda).
+
+This tool aims to make operating system scheduling concepts more accessible, visual, and engaging for both students and developers.
 
 ---
 ## 🎬 Live Demo
@@ -78,10 +80,13 @@ Example:
 
 ## 🛠 Technologies Used
 
-- Flutter (Dart)
-- fl_chart for visualizations
-- File I/O for importing process data
-- OOP principles for scheduling logic
+- **Flutter (Dart)** — Cross-platform app development framework
+- **fl_chart** — For building interactive bar and line charts
+- **file_picker** — To allow users to select input and output files
+- **path_provider** — For accessing device directories for file operations
+- **flutter_native_splash** — To display a custom splash screen on app launch
+- **Object-Oriented Programming (OOP)** — Used to structure scheduling algorithm logic
+- **File I/O** — Reading and writing text files for input/output process data
 
 ---
 
