@@ -98,9 +98,9 @@ class _ResultScreenState extends State<ResultScreen> {
 
               const SizedBox(height: 20),
 
-              // Execution Order
+// Execution Order Table
               const Text(
-                'Execution Order ',
+                'Execution Order Table',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
@@ -123,6 +123,47 @@ class _ResultScreenState extends State<ResultScreen> {
                       );
                     }).toList(),
                   ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+// Gantt Chart
+              const Text(
+                'Gantt Chart',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: widget.executionOrder.map((entry) {
+                    final processId = entry['id'];
+                    final startTime = double.parse(entry['start'].toString());
+                    final endTime = double.parse(entry['end'].toString());
+                   // final duration = endTime - startTime;
+
+                    return Row(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 50,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.purple[300],
+                            border: Border.all(color: Colors.black),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            'P$processId\n[$startTime-$endTime]',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                      ],
+                    );
+                  }).toList(),
                 ),
               ),
 
