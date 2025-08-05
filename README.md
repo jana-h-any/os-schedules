@@ -10,11 +10,11 @@ This tool aims to make operating system scheduling concepts more accessible, vis
 
 Watch the Mobile app in action here:
 
-[![Watch the video](https://img.youtube.com/vi/PTjxTAkZYF4/0.jpg)](https://youtube.com/shorts/PTjxTAkZYF4?si=4deiob9624z8XuI8)
+[![Watch the video](ss/Home.jpg)](https://youtube.com/shorts/FG-k8aWzOaU?si=Hw3Ps8HJ47tfQ0_S)
 
 Watch the Windows app in action here:
 
-[![Watch the video](https://img.youtube.com/vi/FCucXDteDDc/0.jpg)](https://youtu.be/FCucXDteDDc?si=6mnBblZTAm7JxzmQ)
+[![Watch the video](ss/sc%20home.png)](https://youtu.be/CTMznTt7yv4?si=cX07afeps_jNdIkm)
 
 
 
@@ -56,13 +56,13 @@ Example:
 
 
 ✅ **Comprehensive Results Output**
-- Gantt Chart showing execution order with start and end times
+
 - Waiting Time and Turnaround Time calculated for each process
 - Execution table (who started when and finished when)
+- Gantt Chart showing execution order with start and end times
 - Bar charts summarizing all results visually
-- Exportable results for further analysis
 
-✅ **Clean UI with Flutter + fl_chart**
+✅ **Clean UI with Flutter **
 - Interactive charts
 - Process display tables
 - Clear distinction between algorithms and input modes
